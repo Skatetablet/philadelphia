@@ -6,6 +6,7 @@ package mx.itson.philadelphia.presentacion;
 
 import java.util.Date;
 import javax.swing.JOptionPane;
+import mx.itson.philadelphia.entidades.Conductor;
 import mx.itson.philadelphia.persistencia.ConductorDAO;
 
 /**
@@ -27,8 +28,12 @@ public class guardarConductor extends javax.swing.JFrame {
 
     public void cargarFormulario() {
         if (this.id != 0) {
-            //Si el ID es diferente de cero, entonces está intentando editr un registro.
-            //Por tanto, se consulta el método paraa obtener un conductor por su ID y se cargan los valores en el formulario
+            
+            Conductor c = ConductorDAO.obtenerbyId(this.id);
+
+            txtNombre.setText(c.getNombre());
+            txtNumeroLicencia.setText(c.getNumeroLicencia());
+            txtFecha.setText(c.getFechaAlta());
 
         }
     }
@@ -48,9 +53,9 @@ public class guardarConductor extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtNumeroLicencia = new javax.swing.JTextField();
-        txtFecha = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        txtFecha = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -69,12 +74,6 @@ public class guardarConductor extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Numero de licencia");
 
-        txtFecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaActionPerformed(evt);
-            }
-        });
-
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Fecha de Alta");
 
@@ -82,6 +81,12 @@ public class guardarConductor extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        txtFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaActionPerformed(evt);
             }
         });
 
@@ -158,15 +163,26 @@ public class guardarConductor extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String nombre = txtNombre.getText();
         String numeroLicencia = txtNumeroLicencia.getText();
-        Date fechaAlta = txtFecha.getDate();
+        String fechaAlta = txtFecha.getText();
 
-        if (ConductorDAO.guardar(nombre, numeroLicencia, fechaAlta)) {
-            JOptionPane.showMessageDialog(this, "El registro se guardo correctamente", "Registro guardado", JOptionPane.INFORMATION_MESSAGE);
-            listConductores cl = new listConductores();
-            cl.setVisible(true);
-            hide();
-        } else {
-            JOptionPane.showMessageDialog(this, "El registro no se guardo correctamente", "El registro no se guardo", JOptionPane.INFORMATION_MESSAGE);
+        if(this.id <=0){
+            if (ConductorDAO.guardar(nombre, numeroLicencia, fechaAlta)) {
+                JOptionPane.showMessageDialog(this, "El registro se guardo correctamente", "Registro guardado", JOptionPane.INFORMATION_MESSAGE);
+                listConductores lc = new listConductores();
+                lc.setVisible(true);
+                hide();
+            } else {
+                JOptionPane.showMessageDialog(this, "El registro no se guardo correctamente", "El registro no se guardo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }else if(this.id > 0){
+            if (ConductorDAO.editar(this.id,nombre, numeroLicencia, fechaAlta)) {
+                JOptionPane.showMessageDialog(this, "El registro se edito correctamente", "Registro guardado", JOptionPane.INFORMATION_MESSAGE);
+                listConductores lc = new listConductores();
+                lc.setVisible(true);
+                hide();
+            } else {
+                JOptionPane.showMessageDialog(this, "El registro no se edito correctamente", "El registro no se guardo", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -1,6 +1,5 @@
 
 package mx.itson.philadelphia.entidades;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,9 +19,8 @@ public class Conductor {
     private String nombre;
     private String numeroLicencia;
     
-    @Temporal(TemporalType.DATE)
     
-    private Date fechaAlta;
+    private String fechaAlta;
     
     public int getId() {
         return id;
@@ -54,13 +52,17 @@ public class Conductor {
     }
 
 
-    public Date getFechaAlta() {
+    public String getFechaAlta() {
         return fechaAlta;
     }
 
     
-    public void setFechaAlta(Date fechaAlta) {
+    public void setFechaAlta(String fechaAlta) {
         this.fechaAlta = fechaAlta;
+    }
+    
+    public String toString() {
+        return this.nombre;
     }
     
 }

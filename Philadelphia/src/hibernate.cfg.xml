@@ -21,6 +21,8 @@
             L3chonpachon!
         </property>
         <mapping class="mx.itson.philadelphia.entidades.Conductor" />
+        <mapping class="mx.itson.philadelphia.entidades.Multa" />
+        <mapping class="mx.itson.philadelphia.entidades.Oficial" />
     </session-factory>
 </hibernate-configuration>
 

@@ -27,7 +27,7 @@ public class ConductorDAO {
         return conductores;
     }
     
-    public static boolean guardar(String nombre, String numeroLicencia, Date fechaAlta) {
+    public static boolean guardar(String nombre, String numeroLicencia, String fechaAlta) {
         boolean resultado = false;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -35,7 +35,7 @@ public class ConductorDAO {
             
             Conductor c = new Conductor();
             c.setNombre(nombre);
-            c.setNumeroLicencia(nombre);
+            c.setNumeroLicencia(numeroLicencia);
             c.setFechaAlta(fechaAlta);
             
             session.save(c);
@@ -48,39 +48,20 @@ public class ConductorDAO {
         return resultado;
     }
     
-    public Conductor obtenerbyId(int id) {
+    public static Conductor obtenerbyId(int id) {
         Conductor conductor = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             conductor = session.get(Conductor.class, id);
         } catch (HibernateException ex) {
-            System.err.println("Ocurrio un errro: " + ex.getMessage());
+            System.err.println("Ocurrio un error: " + ex.getMessage());
         }
         return conductor;
 
     }
     
-    public boolean eliminar(int id) {
-        boolean resultado = false;
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            Conductor conductor = obtenerbyId(id);
-
-            if (conductor != null) {
-                conductor.setId(id);
-                session.delete(conductor);
-
-                session.getTransaction().commit();
-                resultado = true;
-            }
-        } catch (Exception ex) {
-            System.err.println("Ocurrio un errro: " + ex);
-        }
-        return resultado;
-    }
     
-    public boolean editar(int id, String nombre, String numeroLicencia, Date fechaAlta) {
+    public static boolean editar(int id, String nombre, String numeroLicencia, String fechaAlta) {
         boolean resultado = false;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -96,7 +77,7 @@ public class ConductorDAO {
                 resultado = true;
             }
         } catch (HibernateException ex) {
-            System.err.println("Ocurrio un errro: " + ex.getMessage());
+            System.err.println("Ocurrio un error: " + ex.getMessage());
         }
         return resultado;
     }

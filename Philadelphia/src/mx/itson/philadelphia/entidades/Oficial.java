@@ -1,8 +1,16 @@
 
 package mx.itson.philadelphia.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Oficial {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nombre;
     private String telefono;
@@ -35,6 +43,10 @@ public class Oficial {
     
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+    
+    public String toString() {
+        return this.nombre;
     }
     
     

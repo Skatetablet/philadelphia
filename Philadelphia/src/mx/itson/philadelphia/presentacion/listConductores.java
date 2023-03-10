@@ -26,6 +26,7 @@ public class listConductores extends javax.swing.JFrame {
     /**
      * Creates new form listConductores
      */
+    DefaultTableModel modelo = new DefaultTableModel();
     public listConductores() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -42,9 +43,12 @@ public class listConductores extends javax.swing.JFrame {
 
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbConductor = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
         menuAgregar = new javax.swing.JMenuItem();
@@ -54,6 +58,8 @@ public class listConductores extends javax.swing.JFrame {
         jMenu3.setText("jMenu3");
 
         jMenu4.setText("jMenu4");
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -91,6 +97,20 @@ public class listConductores extends javax.swing.JFrame {
                 .addGap(0, 20, Short.MAX_VALUE))
         );
 
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+
         jMenu5.setText("Conductor");
 
         menuAgregar.setText("Agregar");
@@ -124,13 +144,23 @@ public class listConductores extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRegresar)
+                .addGap(75, 75, 75))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar)
+                    .addComponent(btnRegresar))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -172,17 +202,39 @@ public class listConductores extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         List<Conductor> conductores = ConductorDAO.obtenerTodos();
-        DefaultTableModel modelo = (DefaultTableModel) tbConductor.getModel();
         modelo.setRowCount(0);
-
+        modelo = (DefaultTableModel) tbConductor.getModel();
         for (Conductor c : conductores) {
             modelo.addRow(new Object[]{
                 c.getNombre(),
                 c.getNumeroLicencia(),
-                fecha = formato.format(c.getFechaAlta())
+                c.getFechaAlta()
             });
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+       int filaseleccionada = tbConductor.getSelectedRow();
+
+        if (filaseleccionada == -1) {
+
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila");
+
+        } else {
+            int id = Integer.parseInt(String.valueOf(modelo.getValueAt(tbConductor.getSelectedRow(), 0)));
+
+            guardarConductor cf = new guardarConductor(this, true, id);
+            cf.setVisible(true);
+            hide();
+
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        Inicio in = new Inicio();
+        in.setVisible(true);
+        hide();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     
 
@@ -230,6 +282,9 @@ public class listConductores extends javax.swing.JFrame {
     // End of variables declaration                   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnRegresar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
